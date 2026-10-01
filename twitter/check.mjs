@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+
+const html = readFileSync(new URL('./index.html', import.meta.url), 'utf8');
+const css = readFileSync(new URL('./style.css', import.meta.url), 'utf8');
+const js = readFileSync(new URL('./script.js', import.meta.url), 'utf8');
+
+for (const text of ["See what's happening", 'Continue with phone', 'Continue with Google', 'Continue with Apple', 'Email or username']) {
+  assert.ok(html.includes(text), `Missing: ${text}`);
+}
+assert.match(html, /id="continue"[^>]*disabled/);
+assert.match(html, /class="logo phone-logo"/);
+assert.match(html, /id="country-picker"[^>]*aria-haspopup="listbox"/);
+assert.match(html, /id="country-search"[^>]*placeholder="Search"/);
+assert.match(html, /<option value="\+62">🇮🇩 \+62 Indonesia<\/option>/);
+assert.match(html, /Connect with friends you know/);
+assert.match(html, /Let people find your account by your phone number or email/);
+assert.match(js, /countrySearch\.addEventListener\('input'/);
+assert.match(js, /privacyTrigger\.addEventListener\('click'/);
+assert.match(css, /@media\(max-width:700px\)/);
+assert.match(css, /@media\(prefers-color-scheme:light\)/);
+assert.match(js, /new URL\('mock-auth\.html', location\.href\)/);
+assert.match(js, /event\.origin !== location\.origin \|\| event\.source !== mockAuthPopup/);
+assert.match(js, /result\.state !== mockAuthState/);
+assert.doesNotMatch(js, /accounts\.google\.com\/ServiceLogin/);
+const mockHtml = readFileSync(new URL('./mock-auth.html', import.meta.url), 'utf8');
+const mockJs = readFileSync(new URL('./mock-auth.js', import.meta.url), 'utf8');
+assert.match(mockHtml, /Local simulation · No Google account/);
+assert.match(mockHtml, /Sign in to continue to X/);
+assert.match(mockHtml, /id="mock-form"/);
+assert.match(mockHtml, /Email or phone/);
+assert.match(mockHtml, /id="approve" type="submit">Next/);
+for (const link of ['Help', 'Privacy', 'Terms']) assert.match(mockHtml, new RegExp(`>${link}</a>`));
+assert.doesNotMatch(mockHtml, /type="(?:email|password)"/);
+assert.doesNotMatch(mockHtml + mockJs, /https?:\/\/|fetch\(|XMLHttpRequest/);
+assert.match(mockJs, /#mock-form'\)\.addEventListener\('submit'/);
+assert.match(mockJs, /event\.preventDefault\(\);\s*sendResult\('success'\)/);
+assert.match(mockJs, /window\.opener\.postMessage/);
+assert.match(mockJs, /location\.origin/);
+assert.match(js, /event\.preventDefault\(\)/);
+assert.match(js, /requires the original service/);
+assert.match(html, /id="download-step"[^>]*hidden/);
+assert.match(html, /id="password-step"[^>]*hidden/);
+assert.match(html, /Email signups are only allowed on the apps/);
+assert.match(html, /Sign up with Phone/);
+assert.match(html, /Get the app to finish signing up using email/);
+assert.match(html, /<h2>Login<\/h2>/);
+assert.match(html, /id="toggle-password"[^>]*aria-pressed="false"/);
+assert.match(html, /QR code illustration, not scannable/);
+assert.match(js, /test\(identifier\)/);
+assert.match(js, /passwordStep\.hidden = false/);
+assert.match(css, /\.field:focus-within label/);
+console.log('Static login checks passed');
