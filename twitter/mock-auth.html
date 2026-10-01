@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183151">
+  <title>Local Auth Demo</title>
+  <style>
+    :root{color-scheme:light;font-family:system-ui,sans-serif;background:#eaf1f8;color:#17212d}
+    *{box-sizing:border-box}
+    body{min-height:100dvh;margin:0;display:grid;place-items:center;padding:24px}
+    .page{width:min(100%,480px)}
+    main{padding:36px;border:1px solid #b8c9da;border-radius:20px;background:#fff;box-shadow:0 12px 36px #142d4520}
+    .badge{display:block;margin:-36px -36px 30px;padding:12px 36px;border-radius:20px 20px 0 0;background:#183151;color:#fff;font-size:13px;font-weight:700;letter-spacing:.02em}
+    .mark{display:grid;place-items:center;width:42px;height:42px;border:2px solid #377cb7;border-radius:12px;color:#183151;font-size:24px;font-weight:700}
+    h1{margin:22px 0 8px;font-size:28px;line-height:1.2}
+    p{line-height:1.5;color:#46596b}
+    .intro{margin:0 0 32px}
+    label{display:block;margin-bottom:8px;font-size:14px;font-weight:600}
+    input{width:100%;height:56px;padding:0 15px;border:1px solid #8299aa;border-radius:8px;background:transparent;color:inherit;font:inherit}
+    input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #408de0;outline-offset:2px}
+    .hint{margin:10px 0 0;font-size:13px}
+    .actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:38px}
+    button{padding:11px 20px;border:0;border-radius:8px;background:#183151;color:#fff;font:600 14px system-ui,sans-serif;cursor:pointer}
+    button[type="button"]{background:transparent;color:#183151}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    #status{margin:16px 0 0;font-size:14px}
+    #status:empty{display:none}
+    footer{display:flex;justify-content:flex-end;gap:24px;padding:20px 12px;font-size:13px}
+    a{color:#285b87;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .info{display:none;margin:0 12px 12px;font-size:13px}
+    .info:target{display:block}
+    @media(max-width:520px){body{display:block;padding:16px}main{padding:24px}.badge{margin:-24px -24px 26px;padding:12px 24px}footer{justify-content:center}}
+    @media(prefers-color-scheme:dark){:root{color-scheme:dark;background:#111923;color:#f3f6fa}main{background:#1c2937;border-color:#405368}.badge{background:#304f70}.mark{border-color:#9bcaff;color:#9bcaff}p{color:#c4d1df}input{border-color:#8299aa}button{background:#9bcaff;color:#09192c}button[type="button"],a{color:#9bcaff}}
+  </style>
+  <script src="mock-auth.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <main>
+      <span class="badge">Local simulation · No Google account</span>
+      <div class="mark" aria-hidden="true">L</div>
+      <h1>Sign in to continue to X</h1>
+      <p class="intro">Mock Google flow for local testing. No account is signed in and no identity provider is contacted.</p>
+      <form id="mock-form">
+        <label for="test-identifier">Email or phone</label>
+        <input id="test-identifier" type="text" placeholder="Email or phone" autocomplete="off" spellcheck="false" aria-describedby="input-hint">
+        <p class="hint" id="input-hint">Optional test text only. Do not enter real information; this field is ignored.</p>
+        <div class="actions">
+          <button id="cancel" type="button">Cancel</button>
+          <button id="approve" type="submit">Next</button>
+        </div>
+      </form>
+      <p id="status" role="status" aria-live="polite"></p>
+    </main>
+    <footer aria-label="Local demo information">
+      <a href="#help">Help</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#terms">Terms</a>
+    </footer>
+    <p class="info" id="help">This demo only tests a local callback. Use Continue with Google on the local page to open it.</p>
+    <p class="info" id="privacy">Test text is ignored and is not sent or stored. No external service is contacted.</p>
+    <p class="info" id="terms">This is a local simulation, not a Google or X sign-in service.</p>
+  </div>
+</body>
+</html>
